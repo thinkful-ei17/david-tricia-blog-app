@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 const storiesRouter = require('./routers/stories-router');
+const blog = require('./server');
 const { PORT } = require('./config');
 const { DATABASE } = require('./config');
 const app = express();
@@ -16,6 +17,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.json());
 
+app.use('/api/v0', blog);
+app.use('/api/v1', storiesRouter);
 app.use('/api/v1', storiesRouter);
 
 // Catch-all endpoint for requests to non-existent endpoint
@@ -35,16 +38,15 @@ app.use(function(err, req, res, next) {
   });
 });
 
-const server = app
-  .listen(PORT, () => {
-    console.info(`App listening on port ${server.address().port}`);
-  })
+const server = app.listen(PORT, () => {
+  console.info(`App listening on port ${server.address().port}`);
+})
   .on('error', err => {
     console.error(err);
   });
 
 
-app.get('/api/v1/stories', (req, res) => {
+app.get('/api/v0', (req, res) => {
   knex.select('id', 'title', 'content')
     .from('stories')
     .then(results => {
@@ -53,7 +55,7 @@ app.get('/api/v1/stories', (req, res) => {
     });
 });
 
-app.get('/api/v1/stories/:id', (req, res) => {
+app.get('/api/v0/:id', (req, res) => {
   knex.select('id', 'title', 'content')
     .from('stories')
     .where('stories.id', req.params.id)
@@ -63,7 +65,7 @@ app.get('/api/v1/stories/:id', (req, res) => {
     });
 });
 
-app.post('/api/v1/stories/', jsonParser, (req, res) => {
+app.post('/api/v0', jsonParser, (req, res) => {
   knex
     .insert([{ title: req.body.title, content: req.body.content }]).into('stories')
     .then(results => {
@@ -72,7 +74,7 @@ app.post('/api/v1/stories/', jsonParser, (req, res) => {
     });
 });
 
-app.put('/api/v1/stories/:id', (req, res) => {
+app.put('/api/v0/:id', (req, res) => {
   knex.select('title', 'content')
     .from('stories')
     .where('stories.id', req.params.id)
@@ -88,7 +90,7 @@ app.put('/api/v1/stories/:id', (req, res) => {
     });
 });
 
-app.delete('/api/v1/stories/:id', (req, res) => {
+app.delete('/api/v0/:id', (req, res) => {
   knex('stories')
     .where('id', req.params.id)
     .del()
