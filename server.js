@@ -4,6 +4,7 @@ const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const jsonParser = bodyParser.json();
 const storiesRouter = require('./routers/stories-router');
 const { PORT } = require('./config');
 const { DATABASE } = require('./config');
@@ -41,3 +42,58 @@ const server = app
   .on('error', err => {
     console.error(err);
   });
+
+
+app.get('/api/v1/stories', (req, res) => {
+  knex.select('id', 'title', 'content')
+    .from('stories')
+    .then(results => {
+      res.json(results);
+      res.sendStatus(200);
+    });
+});
+
+app.get('/api/v1/stories/:id', (req, res) => {
+  knex.select('id', 'title', 'content')
+    .from('stories')
+    .where('stories.id', req.params.id)
+    .then(results => {
+      res.json(results);
+      res.sendStatus(200);
+    });
+});
+
+app.post('/api/v1/stories/', jsonParser, (req, res) => {
+  knex
+    .insert([{ title: req.body.title, content: req.body.content }]).into('stories')
+    .then(results => {
+      res.json(results);
+      res.sendStatus(201);
+    });
+});
+
+app.put('/api/v1/stories/:id', (req, res) => {
+  knex.select('title', 'content')
+    .from('stories')
+    .where('stories.id', req.params.id)
+    .returning('id', 'title', 'content')
+  // .insert([{title: req.body.title}, {content: req.body.content}])
+    .update({
+      title: req.body.title,
+      content: req.body.content
+    })
+    .then(results => {
+      res.json(results);
+      res.sendStatus(201);
+    });
+});
+
+app.delete('/api/v1/stories/:id', (req, res) => {
+  knex('stories')
+    .where('id', req.params.id)
+    .del()
+    .then(results => {
+      res.json(results);
+      res.sendStatus(204);
+    });
+});
