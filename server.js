@@ -125,7 +125,7 @@ const server = app.listen(PORT, () => {
             });
     });
     it('should add an item on POST', function() {
-        const newItem = { title: 'Fixing the Treadmill', content: 'How to replace a treadmill deck'
+        const newItem = { title: req.body.title , content: req.body.content
         // , author: 'Bill Forrester' 
       };
         return chai.request(app)
@@ -148,8 +148,8 @@ const server = app.listen(PORT, () => {
   
     it('should update items on PUT', function() {
         const updateData = {
-            title: 'Transferring to RIT',
-            author: 'TJ Papaleo'
+            title: req.params.title,
+            content: req.params.content
         };
   
         return chai.request(app)
