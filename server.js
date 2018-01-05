@@ -5,73 +5,15 @@ const path = require('path');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
-const storiesRouter = require('./routers/stories-router');
+const stories_router = require('./routers/stories-router');
 
 const { PORT } = require('./config');
-const { DATABASE } = require('./config');
 const app = express();
-const knex = require('knex')(DATABASE);
-
 app.use(morgan('common'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.json());
-
-app.use('/api/v1', storiesRouter);
-app.use('/api/v2', storiesRouter);
-
-
-app.get('/api/v0', (req, res) => {
-  console.log('enter app.get');
-  knex.select('id', 'title', 'content')
-    .from('stories')
-    .orderBy('id', 'asc')
-    .then(results => {
-      res.status(200).json(results);
-    });
-});
-
-app.get('/api/v0/:id', (req, res) => {
-  knex.select('id', 'title', 'content')
-    .from('stories')
-    .where('stories.id', req.params.id)
-    .orderBy('id', 'asc')
-    .then(results => {
-      res.status(200).json(results);
-    });
-});
-
-app.post('/api/v0', jsonParser, (req, res) => {
-  knex
-    .insert([{ title: req.body.title, content: req.body.content }]).into('stories')
-    .then(results => {
-      res.status(201).json(results);
-    });
-});
-
-app.put('/api/v0/:id', (req, res) => {
-  knex.select('title', 'content')
-    .from('stories')
-    .where('stories.id', req.params.id)
-    .returning('id', 'title', 'content')
-    .update({
-      title: req.body.title,
-      content: req.body.content
-    })
-    .then(results => {
-      res.status(201).json(results);
-    });
-});
-
-app.delete('/api/v0/:id', (req, res) => {
-  knex('stories')
-    .where('id', req.params.id)
-    .del()
-    .then(results => {
-      res.status(204).json(results);
-    });
-});
-
+app.use('/api/v1', stories_router);
 
 // Catch-all endpoint for requests to non-existent endpoint
 app.use(function(req, res, next) {
