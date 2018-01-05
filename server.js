@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 const stories_router = require('./routers/stories-router');
+const authors_router = require('./routers/author-router');
 
 const { PORT } = require('./config');
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.json());
 app.use('/api/v1', stories_router);
+app.use('/api/v2', authors_router);
 
 // Catch-all endpoint for requests to non-existent endpoint
 app.use(function(req, res, next) {
@@ -32,9 +34,13 @@ app.use(function(err, req, res, next) {
   });
 });
 
-const server = app.listen(PORT, () => {
-  console.info(`App listening on port ${server.address().port}`);
-})
-  .on('error', err => {
-    console.error(err);
-  });
+if (require.main === module) {
+  const server = app.listen(PORT, () => {
+    console.info(`App listening on port ${server.address().port}`);
+  })
+    .on('error', err => {
+      console.error(err);
+    });
+}
+
+module.exports = { app };
