@@ -8,6 +8,7 @@ const { blog } = require('../models/blog_models');
 
 /* ========== GET/READ ALL ITEMS ========== */
 router.get('/stories', (req, res) => {
+  console.log('enter router.get');
   blog.get()
     .then(results => {
       res.json(results);
@@ -55,4 +56,3 @@ router.delete('/stories/:id', (req, res) => {
 });
 
 module.exports = router;
-
