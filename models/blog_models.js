@@ -16,9 +16,10 @@ const blog = {
     //return blog based on id
     if (id !== null) {
       console.log('enter get with id');
-      return knex.select('id', 'title', 'content')
+      return knex.select('stories.id', 'title', 'content', 'username as authorName', 'authors.id as authorID')
         .from('stories')
         .where('stories.id', id)
+        .innerJoin('authors', 'stories.author_id', 'authors.id')
         .orderBy('id', 'asc');
     }
     //return all blogs 
@@ -80,8 +81,8 @@ const authors = {
   update: function(id, username, email) {
     return knex.select('username', 'email')
       .from('authors')
-      .where('authors.id', id)
-      .returning('id', 'usrname', 'email')
+      .where('id', id)
+      .returning('id', 'username', 'email')
       .update({
         username: username,
         email: email

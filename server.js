@@ -6,7 +6,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 const stories_router = require('./routers/stories-router');
-const authors_router = require('./routers/author-router');
+const authors_router = require('./routers/authors-router');
 
 const { PORT } = require('./config');
 const app = express();

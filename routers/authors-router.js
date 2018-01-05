@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const json = bodyParser.json();
 const express = require('express');
 const router = express.Router();
-const { authors } = require('../models/authors_models');
+const { authors } = require('../models/blog_models');
 
 
 /* ========== GET/READ ALL ITEMS ========== */
@@ -24,11 +24,11 @@ router.get('/authors/:id', (req, res) => {
 
 /* ========== POST/CREATE ITEM ========== */
 router.post('/authors', (req, res) => {
-  console.log('enter router.post = ' + req.body.title, req.body.content);
+  console.log('enter router.post = ' + req.body.username, req.body.email);
 
-  const title = req.body.title;
-  const content = req.body.content;
-  authors.create(title, content)
+  const username = req.body.username;
+  const email = req.body.email;
+  authors.create(username, email)
     .then(results => {
       res.json(results);
     });
@@ -36,9 +36,9 @@ router.post('/authors', (req, res) => {
 
 /* ========== PUT/UPDATE A SINGLE ITEM ========== */
 router.put('/authors/:id', (req, res) => {
-  const { title, content } = req.body;
+  const { username, email } = req.body;
   const { id } = req.params;
-  authors.update(id, title, content)
+  authors.update(id, username, email)
     .then(results => {
       res.json(results);
     });
