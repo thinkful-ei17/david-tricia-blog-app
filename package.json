@@ -1,35 +1,35 @@
 {
-  "name": "blog-app",
-  "version": "1.0.0",
-  "description": "Step-by-step guide to creating a basic blog app in node and express backed by postgres",
-  "main": "index.js",
-  "scripts": {
-    "start": "node server.js",
-    "test": "mocha --exit ./test/server-test.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/cklanac/blog-app.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/cklanac/blog-app/issues"
-  },
-  "homepage": "https://github.com/cklanac/blog-app#readme",
-  "dependencies": {
-    "express": "^4.16.2",
-    "knex": "^0.14.2",
-    "mocha": "^4.1.0",
-    "morgan": "^1.9.0",
-    "npm": "^5.6.0",
-    "pg": "^7.4.0",
-    "router": "^1.3.2",
-    "test-server": "^0.2.1"
-  },
-  "devDependencies": {
-    "chai": "^4.1.2",
-    "chai-http": "^3.0.0"
-  }
+    "name": "blog-app",
+    "version": "1.0.0",
+    "description": "Step-by-step guide to creating a basic blog app in node and express backed by postgres",
+    "main": "index.js",
+    "scripts": {
+        "start": "node server.js",
+        "test": "mocha --exit "
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/cklanac/blog-app.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/cklanac/blog-app/issues"
+    },
+    "homepage": "https://github.com/cklanac/blog-app#readme",
+    "dependencies": {
+        "express": "^4.16.2",
+        "knex": "^0.14.2",
+        "mocha": "^4.1.0",
+        "morgan": "^1.9.0",
+        "npm": "^5.6.0",
+        "pg": "^7.4.0",
+        "router": "^1.3.2",
+        "test-server": "^0.2.1"
+    },
+    "devDependencies": {
+        "chai": "^4.1.2",
+        "chai-http": "^3.0.0"
+    }
 }
